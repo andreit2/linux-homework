@@ -1,4 +1,5 @@
 1. Определить алгоритм с наилучшим сжатием.
+
 Создаем пул zfs_pool:
 ```
 zpool create zfs_pool mirror sdb sdc
