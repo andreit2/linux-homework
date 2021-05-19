@@ -125,6 +125,16 @@ otus            checksum  sha256     local
 otus/hometask2  checksum  sha256     inherited from otus
 ```
 ### 3.Найти сообщение от преподавателей
+Восстановливаем с файла файловую систему командой:
 ```
-zfs receive
+sudo zfs receive otus/storage@task2 < otus_task2.file 
+```
+Поиск указанного фвйла не принес результата
+```
+find /otus/hometask2/ -name secret_message
+```
+Подсчет файлов во всех директориях не принес результата 
+```
+find /otus/hometask2 -type f | wc -l
+0
 ```
