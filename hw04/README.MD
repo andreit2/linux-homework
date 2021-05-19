@@ -65,31 +65,56 @@ du -s *
 1182	test_lzjb
 1182	test_zle
 ```
-#### Вывод: Для текстового файла рассмотренные алгоритмы сжатия gzip, gzip-1, gzip-9, lz4, lzjb, zle имеют одинаковую степень сжатия. 
+Вывод показывает значение 1182 Кб одного и того же файла но на разных файловых системах с разным сжатием.
+#### Вывод: Для текстового файла рассмотренные алгоритмы сжатия gzip, gzip-1, gzip-9, lz4, lzjb, zle имеют одинаковую степень сжатия,единственно по параметру compressratio проигрывает файловая система с сжатием lzjb и наименьши значением 1.07x
 
 ### 2.Определить настройки pool’a
 Собираем пул из скачанного архива
 ```
 sudo zpool import -d ${PWD}/zpoolexport otus
 ```
-Определяем настройки хранилища
+Определяем настройки размера pool'a, обьем хранилища составляет 480 мегабайт. Этот парметр не меняется.
 ```
-zfs list
-```
+zpool get size otus
+NAME  PROPERTY  VALUE  SOURCE
+otus  size      480M   -
 
+```
 Определяем тип pool
 ```
+zfs get type
+NAME            PROPERTY  VALUE       SOURCE
+otus            type      filesystem  -
+otus/hometask2  type      filesystem  -
 
 ```
 Определяем значение recordsize
 ```
-
+zfs get recordsize
+NAME            PROPERTY    VALUE    SOURCE
+otus            recordsize  128K     local
+otus/hometask2  recordsize  128K     inherited from otus
+```
+Для смены параметра используем команду:
+```
+sudo zfs set recordsize=64K otus
+sudo zfs get recordsize
+NAME            PROPERTY    VALUE    SOURCE
+otus            recordsize  64K      local
+otus/hometask2  recordsize  64K      inherited from otus
 ```
 Определяем какое сжатие используется
 ```
-
+sudo zfs get compression
+NAME            PROPERTY     VALUE     SOURCE
+otus            compression  zle       local
+otus/hometask2  compression  zle       inherited from otus
 ```
 Определяем какая контрольная сумма используется
 ```
+zfs get checksum
+NAME            PROPERTY  VALUE      SOURCE
+otus            checksum  sha256     local
+otus/hometask2  checksum  sha256     inherited from otus
 
 ```
