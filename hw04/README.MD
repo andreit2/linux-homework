@@ -132,8 +132,10 @@ sudo zfs receive otus/storage@task2 < otus_task2.file
 Поиск файла secret_message
 ```
 find /otus -name secret_message
+/otus/storage/task1/file_mess/secret_message
 ```
 Результат secret_message 
 ```
+cat /otus/storage/task1/file_mess/secret_message
 https://github.com/sindresorhus/awesome
 ```
