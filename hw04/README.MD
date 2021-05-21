@@ -129,12 +129,11 @@ otus/hometask2  checksum  sha256     inherited from otus
 ```
 sudo zfs receive otus/storage@task2 < otus_task2.file 
 ```
-Поиск указанного фвйла не принес результата
+Поиск файла secret_message
 ```
-find /otus/hometask2/ -name secret_message
+find /otus -name secret_message
 ```
-Подсчет файлов во всех директориях не принес результата 
+Результат secret_message 
 ```
-find /otus/hometask2 -type f | wc -l
-0
+https://github.com/sindresorhus/awesome
 ```
