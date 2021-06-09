@@ -29,22 +29,13 @@ udp6       0      0 :::52721                :::*                                
 udp6       0      0 :::20048                :::*                                2826/rpc.mountd
 udp6       0      0 :::111                  :::*                                373/rpcbind
 ```
-
+### Enable firewall
 ```
 sudo systemctl enable firewalld
+sudo firewall-cmd --permanent --zone=public --add-service=nfs
+sudo firewall-cmd --permanent --zone=public --add-service=mountd
+sudo firewall-cmd --permanent --zone=public --add-service=rpc-bind
+sudo firewall-cmd --reload
 sudo firewall-cmd --list-all
-public (active)
-  target: default
-  icmp-block-inversion: no
-  interfaces: eth0 eth1
-  sources:
-  services: dhcpv6-client ssh
-  ports:
-  protocols:
-  masquerade: no
-  forward-ports:
-  source-ports:
-  icmp-blocks:
-  rich rules:
 ```
 
