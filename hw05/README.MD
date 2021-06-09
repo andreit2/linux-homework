@@ -38,11 +38,16 @@ sudo firewall-cmd --permanent --zone=public --add-service=rpc-bind
 sudo firewall-cmd --reload
 sudo firewall-cmd --list-all
 ```
-
+### Create share directory 
 ```
 sudo mkdir -p /mnt/storage
 sudo chown -R nfsnobody:nfsnobody /mnt/storage
 sudo chmod -R 777 /mnt/storage
 ```
+### Describe share directiry
 ```
-
+sudo vi /etc/exports
+/mnt/storage           192.168.1.25(rw,sync,no_root_squash,no_subtree_check)
+sudo exportfs -a
+sudo exportfs -v
+```
