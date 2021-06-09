@@ -39,3 +39,10 @@ sudo firewall-cmd --reload
 sudo firewall-cmd --list-all
 ```
 
+```
+sudo mkdir -p /mnt/storage
+sudo chown -R nfsnobody:nfsnobody /mnt/storage
+sudo chmod -R 777 /mnt/storage
+```
+```
+
