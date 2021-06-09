@@ -7,9 +7,11 @@ Start nfs-server, rpcind services and check nfs status
 ```
 sudo systemctl enable nfs-server --now
 sudo systemctl enable rpcbind
+```
+Check the netstat output for listening TCP and UDP ports
+```
 sudo yum installnet-tools.x86_64 -y
 sudo netstat -ntulp | egrep nfs\|rpc
-
 [vagrant@nfss ~]$ sudo netstat -ntulp | egrep nfs\|rpc
 tcp        0      0 0.0.0.0:39976           0.0.0.0:*               LISTEN      2822/rpc.statd
 tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      373/rpcbind
@@ -28,4 +30,21 @@ udp6       0      0 :::20048                :::*                                
 udp6       0      0 :::111                  :::*                                373/rpcbind
 ```
 
+```
+sudo systemctl enable firewalld
+sudo firewall-cmd --list-all
+public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: eth0 eth1
+  sources:
+  services: dhcpv6-client ssh
+  ports:
+  protocols:
+  masquerade: no
+  forward-ports:
+  source-ports:
+  icmp-blocks:
+  rich rules:
+```
 
