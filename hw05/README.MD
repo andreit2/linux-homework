@@ -1,5 +1,6 @@
-## NFS Server – Installation for Centos 7
-### Install nfs-utils and rpcbind to setup NFSv3
+## Installing and configuring NFS server / client in Centos 7
+### Installing and configuring the NFS server
+Install nfs-utils and rpcbind to setup NFSv3
 ```
 sudo yum install rpcbind nfs-utils -y
 ```
@@ -48,6 +49,22 @@ sudo chmod -R 777 /mnt/storage
 ```
 sudo vi /etc/exports
 /mnt/storage           192.168.1.25(rw,sync,no_root_squash,no_subtree_check)
-sudo exportfs -a
+```
+The nfs-server daemon automatically rereads the  file /etc/exports
+```
+sudo exportfs -r
+```
+The exportfs command shows which resource has been published
+```
 sudo exportfs -v
+```
+
+### Installing and configuring the NFS client
+```
+sudo yum install nfs-utils -y
+```
+Turn on and start turn on rpcbind services
+```
+sudo systemctl start rpcbind
+sudo systemctl enable rpcbind
 ```
