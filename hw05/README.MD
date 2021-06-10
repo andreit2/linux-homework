@@ -68,3 +68,11 @@ Turn on and start turn on rpcbind services
 sudo systemctl start rpcbind
 sudo systemctl enable rpcbind
 ```
+
+```
+sudo mkdir /mnt/nfs-share
+sudo mount -o nfsvers=3  192.168.50.10:/mnt/storage /mnt/nfs-share
+```
+```
+sudo nano /etc/fstab
+```
