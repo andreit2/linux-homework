@@ -2,7 +2,8 @@
 sudo yum install rpcbind nfs-utils -y
 sudo systemctl enable nfs-server --now
 sudo systemctl enable rpcbind
-sudo firewall-cmd enable
+sudo systemctl start firewalld
+sudo systemctl enable firewalld
 sudo firewall-cmd --permanent --zone=public --add-service=nfs
 sudo firewall-cmd --permanent --zone=public --add-service=mountd
 sudo firewall-cmd --permanent --zone=public --add-service=rpc-bind
