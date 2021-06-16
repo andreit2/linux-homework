@@ -4,9 +4,9 @@ sudo systemctl enable nfs-server --now
 sudo systemctl enable rpcbind
 sudo systemctl start firewalld
 sudo systemctl enable firewalld
-sudo firewall-cmd --permanent --zone=public --add-service=nfs
-sudo firewall-cmd --permanent --zone=public --add-service=mountd
-sudo firewall-cmd --permanent --zone=public --add-service=rpc-bind
+sudo firewall-cmd --permanent --add-service=nfs3
+sudo firewall-cmd --permanent --add-service=mountd
+sudo firewall-cmd --permanent --add-service=rpc-bind
 sudo firewall-cmd --reload
 sudo mkdir -p /mnt/share_storage/upload
 sudo chmod -R 777 /mnt/share_storage/upload
