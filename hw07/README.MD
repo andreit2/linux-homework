@@ -1,8 +1,6 @@
 ##  Домашнее задание
 ### Работа с загрузчиком
-Попасть в систему без пароля несколькими способами.\
-Установить систему с LVM, после чего переименовать VG.
-
+### 1. Попасть в систему без пароля несколькими способами.
 ### Способ 1. `init=/bin/sh`
 
 В конце строки начинающейся с linux16 добавляем init=/bin/sh [screenshot 7.1](/hw07/screenshots/7.1.png)
@@ -24,3 +22,35 @@ touch /.autorelabel
 После чего можно перезагружаться и заходить в систему с новым паролем. Полезно когда утерян пароль администратора.
 ### Способ 3. `rw init=/sysroot/bin/sh`
 В строке начинающейся с linux16 заменяем `ro` на `rw init=/sysroot/bin/sh` [screenshot 7.9](/hw07/screenshots/7.9.png) и нажимаем `сtrl-x` для загрузки в систему и мы сразу оказываемся в файловой системе, которая доступна на чтение и запись.
+### 2. Установить систему с LVM, после чего переименовать VG.
+Посмотрим текущее состояние системы:
+>[root@kernel-update ~]# vgs\
+> VG     #PV #LV #SN Attr   VSize  VFree\
+> centos   1   2   0 wz--n- <9.00g    0
+
+Нас интересует вторая строка с именем Volume Group. Приступим к переименованию:
+
+>[root@kernel-update ~]# vgrename centos OtusRoot\
+>Volume group "centos" successfully renamed to "OtusRoot"
+
+Далее правим /etc/fstab, /etc/default/grub, /boot/grub2/grub.cfg Везде заменяем старое название `centos`  на новое `OtusRoot`.
+Пересоздаем initrd image, чтобы он знал новое название Volume Group
+```
+mkinitrd -f -v /boot/initramfs-$(uname -r).img $(uname -r)
+````
+>*** Creating image file ***\
+>*** Creating image file done ***\
+>*** Creating initramfs image file '/boot/initramfs-5.8.5-1.el7.elrepo.x86_64.img' done ***
+
+После чего можем перезагружаться и если все сделано правильно успешно грузимся с
+новым именем Volume Group и проверяем:
+>[root@kernel-update ~]# vgs\
+>  VG       #PV #LV #SN Attr   VSize  VFree\
+>  OtusRoot   1   2   0 wz--n- <9.00g    0
+
+## Добавить модуль в initrd
+Скрипты модулей хранятся в каталоге /usr/lib/dracut/modules.d/. Для того чтобы
+добавить свой модуль создаем там папку с именем 01test:
+В нее поместим два скрипта:
+
+
