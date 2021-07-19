@@ -24,13 +24,13 @@ touch /.autorelabel
 В строке начинающейся с linux16 заменяем `ro` на `rw init=/sysroot/bin/sh` [screenshot 7.9](/hw07/screenshots/7.9.png) и нажимаем `сtrl-x` для загрузки в систему и мы сразу оказываемся в файловой системе, которая доступна на чтение и запись.
 ### 2. Установить систему с LVM, после чего переименовать VG.
 Посмотрим текущее состояние системы:
->[root@kernel-update ~]# vgs\
+>[root@lvm ~]# vgs\
 > VG     #PV #LV #SN Attr   VSize  VFree\
 > centos   1   2   0 wz--n- <9.00g    0
 
 Нас интересует вторая строка с именем Volume Group. Приступим к переименованию:
 
->[root@kernel-update ~]# vgrename centos OtusRoot\
+>[root@lvm ~]# vgrename centos OtusRoot\
 >Volume group "centos" successfully renamed to "OtusRoot"
 
 Далее правим /etc/fstab, /etc/default/grub, /boot/grub2/grub.cfg Везде заменяем старое название `centos`  на новое `OtusRoot`.
@@ -44,7 +44,7 @@ mkinitrd -f -v /boot/initramfs-$(uname -r).img $(uname -r)
 
 После чего можем перезагружаться и если все сделано правильно успешно грузимся с
 новым именем Volume Group и проверяем:
->[root@kernel-update ~]# vgs\
+>[root@lvm ~]# vgs\
 >  VG       #PV #LV #SN Attr   VSize  VFree\
 >  OtusRoot   1   2   0 wz--n- <9.00g    0
 
@@ -59,7 +59,7 @@ mkdir /usr/lib/dracut/modules.d/01test
 2. [test.sh](/hw07/test.sh) - собственно сам вызываемый скрипт, в нём у нас рисуется пингвинчик
 Пересобираем образ initrd
 
->[root@kernel-update 01test]# mkinitrd -f -v /boot/initramfs-$(uname -r).img $(uname -r)
+>[root@lvm 01test]# mkinitrd -f -v /boot/initramfs-$(uname -r).img $(uname -r)
 >.....
 >** Creating image file ***\
 >*** Creating image file done ***\
@@ -72,9 +72,10 @@ dracut -f -v
 Можно проверить/посмотреть какие модули загружены в образ:
 ```
 lsinitrd -m /boot/initramfs-$(uname -r).img | grep test
+test
 ```
 После чего можно пойти двумя путями для проверки:\
 Перезагрузиться и руками выключить опции rghb и quiet и увидеть вывод.\
 Либо отредактировать grub.cfg убрав эти опции.\
-В итоге при загрузке будет пауза на 10 секунд и вы увидите пингвина в выводе терминала.
+В итоге при загрузке вы увидите пингвина в выводе терминала [screenshot 7.10](/hw07/screenshots/7.10.png).
 
