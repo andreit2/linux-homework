@@ -18,5 +18,5 @@ Hello! You are in dracut module!
 msgend
 sleep 10
 echo " continuing...."
-@andreit2
+
  
