@@ -52,5 +52,26 @@ mkinitrd -f -v /boot/initramfs-$(uname -r).img $(uname -r)
 Скрипты модулей хранятся в каталоге /usr/lib/dracut/modules.d/. Для того чтобы
 добавить свой модуль создаем там папку с именем 01test:
 В нее поместим два скрипта:
+1. [module-setup.sh](/hw07/module-setup.sh) - который устанавливает модуль и вызывает скрипт test.sh
+2. [test.sh](/hw07/test.sh) - собственно сам вызываемый скрипт, в нём у нас рисуется пингвинчик
+Пересобираем образ initrd
 
+>[root@kernel-update 01test]# mkinitrd -f -v /boot/initramfs-$(uname -r).img $(uname -r)
+>.....
+>** Creating image file ***\
+>*** Creating image file done ***\
+>*** Creating initramfs image file '/boot/initramfs-5.8.5-1.el7.elrepo.x86_64.img' done ***
+
+или такой командой
+```
+dracut -f -v
+```
+Можно проверить/посмотреть какие модули загружены в образ:
+```
+lsinitrd -m /boot/initramfs-$(uname -r).img | grep test
+```
+После чего можно пойти двумя путями для проверки:\
+Перезагрузиться и руками выключить опции rghb и quiet и увидеть вывод.\
+Либо отредактировать grub.cfg убрав эти опции.\
+В итоге при загрузке будет пауза на 10 секунд и вы увидите пингвина в выводе терминала.
 
