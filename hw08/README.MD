@@ -5,6 +5,26 @@
 - Из репозитория epel установить spawn-fcgi и переписать init-скрипт на unit-файл (имя service должно называться так же: spawn-fcgi).
 - Дополнить unit-файл httpd (он же apache) возможностью запустить несколько инстансов сервера с разными конфигурационными файлами.
 ## Решение:
+Для проверки домашнего задания нужно положить в одну директорию Vagranfile и скрипт script.sh
+поднять стенд командой `vagrant up`
+для проверки подключиться к стенду командой `vagrant ssh`
+првоерка 1 части командой на стенде  `tail -f /var/log/messages` вывод буде содержать:
+>Jul 20 15:11:04 hw8 systemd: Starting My watchlog service...\
+>Jul 20 15:11:05 hw8 root: Tue Jul 20 15:11:05 EEST 2021: I found word, Master!\
+>Jul 20 15:11:05 hw8 systemd: Started My watchlog service.
+проверка 2 часть  командой `systemctl status spawn-fcgi` вывод должен содержать:
+>[vagrant@hw8 ~]$ systemctl status spawn-fcgi
+>● spawn-fcgi.service - Spawn-fcgi startup service by Otus
+>   Loaded: loaded (/etc/systemd/system/spawn-fcgi.service; disabled; vendor preset: disabled)
+>   Active: active (running) since Tue 2021-07-20 14:51:38 UTC; 4min 14s ago
+> Main PID: 3488 (php-cgi)
+>   CGroup: /system.slice/spawn-fcgi.service
+>           ├─3488 /usr/bin/php-cgi
+>           ├─3499 /usr/bin/php-cgi
+>           ├─3500 /usr/bin/php-cgi
+ 
+проверка 3 часть командой `ss -tnulp | grep httpd`
+Практика проекта:
 1. Написать сервис, который будет раз в 30 секунд мониторить лог на предмет наличия ключевого слова. Файл и слово должны задаваться в `/etc/sysconfig`
 Для начала создаём файл с конфигурацией для сервиса в директории `/etc/sysconfig` - из неё сервис будет брать необходимую переменную.
 >[andreit@stand ~#] cat /etc/sysconfig/watchlog\
