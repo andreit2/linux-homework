@@ -68,6 +68,8 @@ systemctl daemon-reload
 systemctl start spawn-fcgi
 # Дополнить юнит-файл apache httpd возможностью запустить несколько инстансов сервера с разными конфигами
 #Для запуска нескольких экземпляров сервиса будем использовать шаблон в конфигурации файла окружения:
+cp /usr/lib/systemd/system/httpd.service /etc/systemd/system
+mv /etc/systemd/system/httpd.service /etc/systemd/system/httpd@.service
 echo '[Unit]
 Description=The Apache HTTP Server
 After=network.target remote-fs.target nss-lookup.target
@@ -96,8 +98,6 @@ echo 'PidFile /var/run/httpd-first.pid
 ServerName localhost' >> /etc/httpd/conf/first.conf
 echo 'PidFile /var/run/httpd-second.pid
 ServerName localhost' >> /etc/httpd/conf/second.conf
-cp /usr/lib/systemd/system/httpd.service /etc/systemd/system
-mv /etc/systemd/system/httpd.service /etc/systemd/system/httpd@.service
 sed -i '/Listen 80/c Listen 8080' /etc/httpd/conf/first.conf
 sed -i '/Listen 80/c Listen 8081' /etc/httpd/conf/second.conf
 setenforce 0
