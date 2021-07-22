@@ -48,7 +48,9 @@ start() {
         trap 'rm -f "$lockfile"; exit $?' INT TERM EXIT
         while true
             do
+	    rm mail.txt
             log
+	    time
             parser >> mail.txt
             mail -s "Statistic" root@localhost < mail.txt
             exit
