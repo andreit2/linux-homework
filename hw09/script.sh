@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #Переменные
 lockfile=/tmp/lockfile
 X=10
