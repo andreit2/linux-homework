@@ -4,14 +4,12 @@
 lockfile=/tmp/lockfile
 X=10
 Y=10
-F=access-4560-644067.log
-env=.env
+F=/opt/linux-homework/hw09/access-4560-644067.log
+env=/opt/linux-homework/hw09/.env
 timestamp=`cat $env | grep timestamp | awk -F"=" '{ print $2}'`
 number_previous=`cat $env | grep number | awk -F"=" '{ print $2}'`
 number_actual=`cat $F | wc -l`
 parser() {
-#echo "Request generated:" && date && echo "Log started:" && cat $F | awk '{print $4$5}' | head -n 1
-#echo "-----------------------------------------------------"
 #X IP адресов (с наибольшим кол-вом запросов) с указанием кол-ва запросов c момента последнего запуска скрипта
 echo $X "IP adrreses with the most requestes :" && cat $F | awk -F" " '{print $1}' | sort | uniq -c | sort -rn | head -n $X | awk '{print $2 " had " $1 " requests"}' | column -t
 echo "-----------------------------------------------------"
