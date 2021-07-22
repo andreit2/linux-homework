@@ -7,7 +7,7 @@ Y=10
 # Указываем имя файла
 F=access-4560-644067.log
 parser() {
-echo "Request generated:" && date >> mail.txt && echo "Log started:" && cat $F | awk '{print $4$5}' | head -n 1
+echo "Request generated:" && date && echo "Log started:" && cat $F | awk '{print $4$5}' | head -n 1
 echo "-----------------------------------------------------"
 #X IP адресов (с наибольшим кол-вом запросов) с указанием кол-ва запросов c момента последнего запуска скрипта
 echo $X "IP adrreses with the most requestes :" && cat $F | awk -F" " '{print $1}' | sort | uniq -c | sort -rn | head -n $X | awk '{print $2 " had " $1 " requests"}' | column -t
