@@ -25,7 +25,7 @@ echo "-----------------------------------------------------"
 #список всех кодов возврата с указанием их кол-ва с момента последнего запуска
 echo "HTTP statuses:" && cat $F | awk '{print $9}'| grep -v "-" | sort | uniq -c | sort -rn | awk '{print $2 " was " $1 " times."}' | column -t
 }
-time() {
+t() {
     date_actual=`date '+%Y-%m-%d %H:%M:%S'`
     echo "Request generated: $timestamp - $date_actual" >> mail.txt
     sed -i "s/timestamp=.*/timestamp=$date_actual/g" $env
@@ -50,7 +50,7 @@ start() {
             do
 	    rm mail.txt
             log
-	    time
+	    t
             parser >> mail.txt
             mail -s "Statistic" root@localhost < mail.txt
             exit
