@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 #Переменные
 lockfile=/tmp/lockfile
 X=10
@@ -39,7 +38,7 @@ log() {
 	    let n=$number_actual-$number_previous
 	    let number_previous=$number_actual-$n+1
     fi
-    sed -i "s/num=.*/num=$num_curr/g" $envfile
+    sed -i "s/num=.*/num=$num_curr/g" $env
 }
 
 start() {
