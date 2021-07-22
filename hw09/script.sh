@@ -2,7 +2,7 @@
 
 
 #Переменные
-lockfile=./lockfile
+lockfile=/tmp/lockfile
 X=10
 Y=10
 F=access-4560-644067.log
