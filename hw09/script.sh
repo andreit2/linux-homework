@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #Переменные
 lockfile=/tmp/lockfile
 X=10
@@ -7,8 +6,6 @@ Y=10
 F=/opt/linux-homework/hw09/access-4560-644067.log
 env=/opt/linux-homework/hw09/.env
 timestamp=`cat $env | grep timestamp | awk -F"=" '{ print $2}'`
-number_previous=`cat $env | grep number | awk -F"=" '{ print $2}'`
-number_actual=`cat $F | wc -l`
 parser() {
 #X IP адресов (с наибольшим кол-вом запросов) с указанием кол-ва запросов c момента последнего запуска скрипта
 echo $X "IP adrreses with the most requestes :" && cat $F | awk -F" " '{print $1}' | sort | uniq -c | sort -rn | head -n $X | awk '{print $2 " had " $1 " requests"}' | column -t
@@ -27,18 +24,6 @@ t() {
     echo "Request generated: $timestamp - $date_actual" >> mail.txt
     sed -i "s/timestamp=.*/timestamp=$date_actual/g" $env
 }
-log() {
-    if (($number_previous > $number_actual));
-	then
-	    number_previous=0
-	    let n=$number_actual
-	else
-	    let n=$number_actual-$number_previous
-	    let number_previous=$number_actual-$n+1
-    fi
-    sed -i "s/num=.*/num=$num_curr/g" $env
-}
-
 start() {
     if ( set -o noclobber; echo `ps -a | grep script.sh`  > "$lockfile") 2> /dev/null;
         then
@@ -46,8 +31,7 @@ start() {
         while true
             do
 	    rm mail.txt
-            log
-	    t
+            t
             parser >> mail.txt
             mail -s "Statistic" root@localhost < mail.txt
             exit
