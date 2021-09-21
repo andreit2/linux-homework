@@ -25,3 +25,29 @@ tp=`ls -l /proc/$proc/fd/ | grep -E '\/dev\/tty|pts' | cut -d\/ -f3,4 | uniq`
 TTY=`awk '{ if ($7 == 0) {printf "?"} else { printf "'"$tp"'" }}' /proc/$proc/stat`
 ```
 Смотрим содержимое в директории fd  на предмет терминала tty или псевдотерминала pts
+
+**STAT**
+
+Смотрим флаги каждого процесса в файле /proc/PID/cmdline
+```
+STAT=`cat /proc/$proc/status | awk '/State/{print $2}'`
+```
+
+**TIME**
+
+В документации указано, что выводится время жизни процесса состоящее из (14) utime + (15) stime из /proc/$pid/stat, причем значение времени указано в clock ticks. Для того, что бы получить человекочитаемое время, нужно сумму utime и stime разделить на CLK_TCK, которая есть системная переменная getconf CLK_TCK, после чего привести время функцией strftime к виду ЧЧ-ММ.
+```
+awk -v ticks="$(getconf CLK_TCK)" '{print strftime ("%M:%S", ($14+$15)/ticks)}' /proc/$pid/stat
+```
+
+**COMMAND**
+
+```
+    COMMAND=`cat /proc/$proc/cmdline`
+    if  [[ -z "$COMMAND" ]]
+        then
+        COMMAND="[`awk '/Name/{print $2}' /proc/$proc/status`]"
+    else
+        COMMAND=`cat /proc/$proc/cmdline`
+    fi
+```
